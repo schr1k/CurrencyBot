@@ -54,5 +54,4 @@ async def exchange(message):
 
 
 if __name__ == '__main__':
-    print('Работаем👌')
     executor.start_polling(dp, skip_updates=False)
