@@ -1,4 +1,4 @@
-## Telegram bot for getting current exchange rate of currencies and crypto.
+# Telegram rates bot.
 
 ---
 ### Setup:
