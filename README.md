@@ -5,5 +5,5 @@
  git clone https://github.com/schr1k/CurrencyBot.git .
 ```
 ```console
- pip install requirements.txt
+ pip install -r requirements.txt
 ```
