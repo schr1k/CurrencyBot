@@ -32,7 +32,7 @@ def get_currency(currency_from, currency_to):
 async def start(message):
     try:
         await message.answer('Привет, я могу показать актуальный курс обмена практически любой валюты (крипты).\n'
-                             'Пример: /usd-rub.\n'
+                             'Пример: /usd_rub.\n'
                              'Полный список валют <a href="https://t.me/shr1k_currency_list">здесь</a>.',
                              parse_mode='html')
     except Exception as e:
@@ -40,15 +40,15 @@ async def start(message):
 
 
 # Обмен ================================================================================================================
-@dp.message_handler(regexp=r'\w{1,}-\w{1,}')
+@dp.message_handler(regexp=r'\w{1,}_\w{1,}')
 async def exchange(message):
     try:
-        currency_from, currency_to = [i.upper() for i in message.text[1:].split('-')]
+        currency_from, currency_to = [i.upper() for i in message.text[1:].split('_')]
         currency = get_currency(currency_from, currency_to)
         if 'error' in currency.keys():
             await message.answer('Валюта не найдена.')
         else:
-            await message.answer(f'1 {currency_from} = {str(currency["rate"])[:7]} {currency_to}')
+            await message.answer(f'1 {currency_from} = {str(currency["rate"])[:10]} {currency_to}')
     except Exception as e:
         warning_log.warning(e)
 
