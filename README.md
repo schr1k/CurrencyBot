@@ -1,9 +1,10 @@
 ## Телеграм бот для получения курса практически любой валюты/монеты.
+
 ---
 ### Установка:
-```console
+``` bash
  git clone https://github.com/schr1k/CurrencyBot.git .
 ```
-```console
+``` bash
  pip install -r requirements.txt
 ```
