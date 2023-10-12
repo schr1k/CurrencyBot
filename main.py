@@ -1,23 +1,30 @@
+import asyncio
 import logging
+from datetime import datetime
+
 import requests
 
-from aiogram import Bot
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.dispatcher import Dispatcher
-from aiogram.utils import executor
+
+from aiogram import Bot, Dispatcher, F
+from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.types import Message
+from aiogram.filters.command import Command
+
 
 import config
 
 bot = Bot(token=config.TOKEN)
-dp = Dispatcher(bot, storage=MemoryStorage())
+dp = Dispatcher(storage=MemoryStorage())
 
-logging.basicConfig(filename="all_log.log", level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-warning_log = logging.getLogger("warning_log")
-warning_log.setLevel(logging.WARNING)
-fh = logging.FileHandler("warning_log.log")
-formatter = logging.Formatter('%(levelname)s - %(asctime)s - %(funcName)s: %(message)s (%(lineno)d)')
+logging.basicConfig(filename="all.log", level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(filename)s function: %(funcName)s line: %(lineno)d - %(message)s')
+errors = logging.getLogger("errors")
+errors.setLevel(logging.ERROR)
+fh = logging.FileHandler("errors.log")
+formatter = logging.Formatter(
+    '%(asctime)s - %(levelname)s - %(filename)s function: %(funcName)s line: %(lineno)d - %(message)s')
 fh.setFormatter(formatter)
-warning_log.addHandler(fh)
+errors.addHandler(fh)
 
 
 def get_currency(currency_from, currency_to):
@@ -28,20 +35,20 @@ def get_currency(currency_from, currency_to):
 
 
 # Главная ==============================================================================================================
-@dp.message_handler(commands=['start'])
-async def start(message):
+@dp.message(Command('start'))
+async def start(message: Message):
     try:
         await message.answer('Привет, я могу показать актуальный курс обмена практически любой валюты (крипты).\n'
                              'Пример: /usd_rub.\n'
                              'Полный список валют <a href="https://t.me/shr1k_currency_list">здесь</a>.',
                              parse_mode='html')
     except Exception as e:
-        warning_log.warning(e)
+        errors.error(e)
 
 
 # Обмен ================================================================================================================
-@dp.message_handler(regexp=r'\w{1,}_\w{1,}')
-async def exchange(message):
+@dp.message(F.text.regexp(r'/\w{1,}_\w{1,}'))
+async def exchange(message: Message):
     try:
         currency_from, currency_to = [i.upper() for i in message.text[1:].split('_')]
         currency = get_currency(currency_from, currency_to)
@@ -50,9 +57,13 @@ async def exchange(message):
         else:
             await message.answer(f'1 {currency_from} = {str(currency["rate"])[:10]} {currency_to}')
     except Exception as e:
-        warning_log.warning(e)
+        errors.error(e)
+
+
+async def main():
+    await dp.start_polling(bot)
 
 
 if __name__ == '__main__':
-    print('Работаем👌')
-    executor.start_polling(dp, skip_updates=False)
+    print(f'Бот запущен ({datetime.now().strftime("%H:%M:%S %d.%m.%Y")}).')
+    asyncio.run(main())
