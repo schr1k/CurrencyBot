@@ -1,17 +1,18 @@
 # Telegram rates bot.
 
 ---
+
 ### Setup:
 1. Clone this repository:
-``` bash
- git clone https://github.com/schr1k/CurrencyBot.git .
+```bash
+git clone https://github.com/schr1k/CurrencyBot.git .
 ```
 2. Install all necessary packages:
-``` bash
- pip install -r requirements.txt
+```bash
+pip install -r requirements.txt
 ```
 3. Change credentials in config.py:
-``` python
- TOKEN = ''  # API key of telegram bot
- API_KEY = ''  # API key from https://www.coinapi.io/
+```python
+TOKEN = ''  # API key of telegram bot
+API_KEY = ''  # API key from https://www.coinapi.io/
 ```
