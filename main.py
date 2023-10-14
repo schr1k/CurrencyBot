@@ -2,19 +2,16 @@ import asyncio
 import logging
 from datetime import datetime
 
-import requests
-
+from api import get_currency
 
 from aiogram import Bot, Dispatcher, F
-from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import Message
 from aiogram.filters.command import Command
-
 
 import config
 
 bot = Bot(token=config.TOKEN)
-dp = Dispatcher(storage=MemoryStorage())
+dp = Dispatcher()
 
 logging.basicConfig(filename="all.log", level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(filename)s function: %(funcName)s line: %(lineno)d - %(message)s')
@@ -27,13 +24,6 @@ fh.setFormatter(formatter)
 errors.addHandler(fh)
 
 
-def get_currency(currency_from, currency_to):
-    url = f'https://rest.coinapi.io/v1/exchangerate/{currency_from}/{currency_to}'
-    headers = {'X-CoinAPI-Key': config.API_KEY}
-    response = requests.get(url, headers=headers).json()
-    return response
-
-
 # Главная ==============================================================================================================
 @dp.message(Command('start'))
 async def start(message: Message):
@@ -41,13 +31,13 @@ async def start(message: Message):
         await message.answer('Привет, я могу показать актуальный курс обмена практически любой валюты (крипты).\n'
                              'Пример: /usd_rub.\n'
                              'Полный список валют <a href="https://t.me/shr1k_currency_list">здесь</a>.',
-                             parse_mode='html')
+                             parse_mode='HTML')
     except Exception as e:
         errors.error(e)
 
 
 # Обмен ================================================================================================================
-@dp.message(F.text.regexp(r'/\w{1,}_\w{1,}'))
+@dp.message(F.text.regexp(r'/\w+_\w+'))
 async def exchange(message: Message):
     try:
         currency_from, currency_to = [i.upper() for i in message.text[1:].split('_')]
