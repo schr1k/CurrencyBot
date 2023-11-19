@@ -41,7 +41,7 @@ async def start(message: Message):
 async def exchange(message: Message):
     try:
         currency_from, currency_to = [i.upper() for i in message.text[1:].split('_')]
-        currency = get_currency(currency_from, currency_to)
+        currency = await get_currency(currency_from, currency_to)
         if 'error' in currency.keys():
             await message.answer('Валюта не найдена.')
         else:
