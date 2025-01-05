@@ -1,0 +1,21 @@
+services:
+    currency_bot:
+        container_name:
+            currency_bot
+        build:
+            context:
+                .
+            dockerfile:
+                Dockerfile
+        restart:
+            unless-stopped
+        develop:
+            watch:
+                - action: sync+restart
+                  path: .
+                  target: /app
+        deploy:
+            resources:
+                limits:
+                    cpus: "2"
+                    memory: 2000M

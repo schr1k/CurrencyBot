@@ -1,5 +1,9 @@
+# Python
 venv
-.idea
 __pycache__
-*.log
-config.py
+
+# IDEs
+.idea
+.vscode
+
+.env
