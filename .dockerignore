@@ -1,0 +1,22 @@
+# Python
+venv
+__pycache__
+
+# IDEs
+.idea
+.vscode
+
+# Docker
+Dockerfile
+compose.yaml
+.dockerignore
+
+# Git
+.git
+.github
+.gitignore
+README.md
+LICENSE.md
+CODE_OF_CONDUCT.md
+
+.env.example

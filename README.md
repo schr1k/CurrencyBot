@@ -1,18 +1,43 @@
-# Telegram rates bot.
+# Setup
+1. Create virtual environment.
+    ```bash  
+    python -m venv venv  
+    ```
 
----
+2. Activate it.
+    * On Windows:
+        ```bash
+        venv\Scripts\activate
+        ```
 
-### Setup:
-1. Clone this repository:
+    * On MacOS/Linux:
+        ```bash
+        source venv/bin/activate
+        ```
+
+3. Install requirements.
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. Create .env file.
+    ```bash
+    cp .env.example .env
+    ```
+
+# Launch
+## Docker
+### Development mode (fast-refresh)
 ```bash
-git clone https://github.com/schr1k/CurrencyBot.git .
+docker compose watch
 ```
-2. Install all necessary packages:
+
+### Production mode
 ```bash
-pip install -r requirements.txt
+docker compose up --build -d
 ```
-3. Change credentials in config.py:
-```python
-TOKEN = ''  # API key of telegram bot
-API_KEY = ''  # API key from https://www.coinapi.io/
+
+## Default
+```bash
+python main.py
 ```

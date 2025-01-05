@@ -1,2 +1,12 @@
-TOKEN = ''  # API ключ телеграм бота
-API_KEY = ''  # API ключ https://www.coinapi.io/
+from pydantic_settings import BaseSettings
+
+
+class Config(BaseSettings):
+    TOKEN: str
+    API_KEY: str
+
+    class Config:
+        env_file = '.env'
+
+
+config = Config()
